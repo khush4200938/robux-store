@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robux & Roblox Plus Store</title>
+    <!-- Tailwind CSS CDN for modern responsive UI styling -->
+    <script src="https://tailwindcss.com"></script>
+    <!-- Google Fonts for Gaming Aesthetic -->
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #0b0c10;
+            color: #c5c6c7;
+        }
+        .gaming-card {
+            background: linear-gradient(145deg, #1f2833, #151a21);
+            border: 1px solid #45f3ff;
+            box-shadow: 0 0 15px rgba(69, 243, 255, 0.1);
+        }
+        .neon-glow {
+            text-shadow: 0 0 10px rgba(69, 243, 255, 0.6);
+        }
+        .neon-btn {
+            background: linear-gradient(90deg, #ff007f, #7f00ff);
+            box-shadow: 0 0 15px rgba(255, 0, 127, 0.4);
+            transition: all 0.3s ease;
+        }
+        .neon-btn:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 25px rgba(255, 0, 127, 0.7);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between antialiased selection:bg-purple-500 selection:text-white pb-10">
+
+    <!-- HOMEPAGE & HERO HEADER -->
+    <header class="w-full text-center py-8 px-4">
+        <!-- Big Robux Store Logo -->
+        <div class="inline-block text-4xl md:text-5xl font-extrabold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 uppercase mb-2 neon-glow">
+            🎮 ROBUX STORE 🎮
+        </div>
+        <p class="text-xs md:text-sm text-gray-400 max-w-md mx-auto">Instant Robux & Roblox Plus Deliveries. Safe, reliable, and tailored for all gaming enthusiasts.</p>
+    </header>
+
+    <!-- MAIN INTERACTIVE HUB (iPhone-friendly layout) -->
+    <main class="w-full max-w-md mx-auto px-4 flex-grow">
+        
+        <!-- STEP CONTROLLER CONTAINER -->
+        <div class="gaming-card rounded-2xl p-6 mb-6">
+            
+            <!-- STAGE 1 & 2: Username Input & Confirmation -->
+            <div id="step-username" class="space-y-4">
+                <h2 class="text-xl font-bold text-white border-b border-purple-500 pb-2">Step 1: Account Identification</h2>
+                <div>
+                    <label class="block text-xs font-semibold text-cyan-400 uppercase tracking-wider mb-2">Roblox Username</label>
+                    <input type="text" id="username" placeholder="Enter Roblox Username..." class="w-full p-3 bg-black/40 border border-gray-700 rounded-xl focus:outline-none focus:border-cyan-400 text-white font-semibold">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-pink-400 uppercase tracking-wider mb-2">Confirm Username</label>
+                    <input type="text" id="confirm-username" placeholder="Re-enter to confirm..." class="w-full p-3 bg-black/40 border border-gray-700 rounded-xl focus:outline-none focus:border-pink-400 text-white font-semibold">
+                </div>
+                <div id="username-error" class="text-red-400 text-sm hidden font-medium">⚠️ Usernames do not match. Please verify.</div>
+                <button onclick="verifyUsername()" class="w-full neon-btn text-white font-bold py-3.5 px-6 rounded-xl uppercase tracking-wider text-sm mt-2">
+                    Verify Username & Unlock Packages
+                </button>
+            </div>
+
+            <!-- STAGE 3 & 4: Packages Showcase -->
+            <div id="step-packages" class="hidden space-y-6">
+                <div class="flex items-center justify-between border-b border-cyan-400 pb-2">
+                    <h2 class="text-xl font-bold text-white">Select Your Package</h2>
+                    <span id="display-user" class="text-xs bg-cyan-500/20 text-cyan-400 px-2.5 py-1 rounded-full font-mono font-bold"></span>
+                </div>
+
+                <!-- Section Toggles -->
+                <div class="grid grid-cols-2 gap-2 p-1 bg-black/40 rounded-xl border border-gray-800">
+                    <button onclick="toggleSection('robux')" id="tab-robux" class="py-2.5 text-center text-sm font-bold rounded-lg bg-cyan-500 text-black transition-all">Robux Packs</button>
+                    <button onclick="toggleSection('plus')" id="tab-plus" class="py-2.5 text-center text-sm font-bold rounded-lg text-gray-400 hover:text-white transition-all">Roblox Plus ⭐</button>
+                </div>
+
+                <!-- Robux Grid Pricing Section -->
+                <div id="section-robux" class="space-y-3 max-h-[350px] overflow-y-auto pr-1"></div>
+
+                <!-- Roblox Plus Subscription Section -->
+                <div id="section-plus" class="space-y-3 hidden max-h-[350px] overflow-y-auto pr-1"></div>
+
+                <button onclick="goToPayment()" id="checkout-btn" disabled class="w-full bg-gray-700 text-gray-400 font-bold py-3.5 px-6 rounded-xl uppercase tracking-wider text-sm cursor-not-allowed transition-all">
+                    Proceed to Payment (Select a Pack)
+                </button>
+            </div>
+
+            <!-- STAGE 5: Payment Processing Screen -->
+            <div id="step-payment" class="hidden space-y-5">
+                <h2 class="text-xl font-bold text-white border-b border-pink-500 pb-2">💳 Secure Gateway Payment</h2>
+                
+                <!-- Package Summary -->
+                <div class="p-3 bg-black/30 rounded-xl border border-gray-800 space-y-1">
+                    <div class="flex justify-between text-sm"><span class="text-gray-400">Selected Product:</span> <span id="summary-pack" class="font-bold text-white"></span></div>
+                    <div class="flex justify-between text-base"><span class="text-gray-400">Total Amount Payable:</span> <span id="summary-price" class="font-bold text-emerald-400 text-lg"></span></div>
+                </div>
+
+                <!-- Live UPI QR Code Representation Container -->
+                <div class="flex flex-col items-center justify-center p-4 bg-white rounded-xl shadow-inner max-w-[200px] mx-auto border-4 border-purple-600">
+                    <img src="" alt="UPI QR Code" class="w-36 h-36">
+                    <span class="text-[10px] text-gray-500 mt-1.5 font-bold uppercase tracking-widest">Scan to Pay via UPI</span>
+                </div>
+
+                <!-- UPI Text Details Panel -->
+                <div class="space-y-2">
+                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider">UPI ID Reference</label>
+                    <div class="flex">
+                        <input type="text" id="upi-id" readonly value="naruka13@fam" class="w-full p-2.5 text-sm bg-black/60 border border-gray-700 rounded-l-xl text-cyan-400 font-mono font-bold focus:outline-none">
+                        <button onclick="copyUPI()" class="bg-cyan-500 hover:bg-cyan-400 text-black font-bold px-4 rounded-r-xl text-xs uppercase tracking-wider transition-colors">Copy</button>
+                    </div>
+                    <div id="copy-toast" class="text-xs text-emerald-400 font-medium hidden">✓ UPI ID copied successfully!</div>
+                </div>
+
+                <!-- Payment Proof Submission Engine -->
+                <div class="space-y-2 pt-2">
+                    <label class="block text-xs font-semibold text-pink-400 uppercase tracking-wider">UTR / Transaction ID (12 Digits)</label>
+                    <input type="text" id="utr-input" max-length="12" placeholder="Enter 12-digit UTR Code..." class="w-full p-3 bg-black/40 border border-gray-700 rounded-xl focus:outline-none focus:border-pink-500 text-white font-mono text-center tracking-widest">
+                </div>
+
+                <div class="grid grid-cols-2 gap-2 pt-2">
+                    <button onclick="backToPackages()" class="w-full bg-gray-800 hover:bg-gray-700 text-white font-bold py-3 px-4 rounded-xl text-xs uppercase tracking-wider">Back</button>
+                    <button onclick="submitPayment()" class="w-full neon-btn text-white font-bold py-3 px-4 rounded-xl text-xs uppercase tracking-wider">Submit Payment</button>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- CENTRAL CONVERSION LAUNCH BUTTON -->
+    <div id="sticky-action-bar" class="w-full max-w-md mx-auto px-4">
+        <button onclick="focusStore()" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-extrabold py-4 px-6 rounded-2xl uppercase tracking-widest shadow-xl text-center text-base transform active:scale-95 transition-transform">
+            ⚡ Buy Robux Now ⚡
+        </button>
+    </div>
+
+    <!-- MAIN SYSTEM LOGIC ARCHITECTURE -->
+    <script>
+        const YOUR_UPI_ID = "naruka13@fam";
+
+        const robuxPacks = [
+            { id: 'r1', amount: '400 Robux', price: 199 },
+            { id: 'r2', amount: '800 Robux', price: 499 },
+            { id: 'r3', amount: '1,200 Robux', price: 599 },
+            { id: 'r4', amount: '1,700 Robux', price: 799 },
+            { id: 'r5', amount: '3,150 Robux', price: 1199 },
+            { id: 'r6', amount: '4,500 Robux', price: 1999 },
+            { id: 'r7', amount: '10,000 Robux', price: 2999 },
+        ];
+
+        const plusPacks = [
+            { id: 'p1', amount: 'Roblox Plus Monthly', price: 199, suffix: '/month' },
+            { id: 'p2', amount: 'Roblox Plus 500', price: 399, suffix: '/month' },
+            { id: 'p3', amount: 'Roblox Plus 1000', price: 999, suffix: '/month' },
+            { id: 'p4', amount: 'Roblox Plus 2000', price: 1499, suffix: '/month' },
+        ];
+
+        let selectedProduct = null;
+        let activeUsername = "";
+
+        window.addEventListener('DOMContentLoaded', () => {
+
+renderPacks('section-robux', robuxPacks, 'cyan');
+renderPacks('section-plus', plusPacks, 'purple');
+});
+function renderPacks(containerId, packs, themeColor) {
+const container = document.getElementById(containerId);
+const borderClass = themeColor === 'cyan' ? 'hover:border-cyan-400' : 'hover:border-purple-400';
+packs.forEach(pack => {
+const item = document.createElement('div');
+item.className = flex items-center justify-between p-3.5 bg-black/20 border border-gray-800 rounded-xl cursor-pointer transition-all ${borderClass};
+item.onclick = () => selectPackElement(pack, item);
+item.innerHTML = <div class="flex items-center space-x-3"> <div class="w-4 h-4 rounded-full border border-gray-600 flex items-center justify-center"> <div class="w-2 h-2 rounded-full hidden inner-dot bg-${themeColor}-400"></div> </div> <span class="text-sm font-bold text-white">${pack.amount}</span> </div> <span class="text-sm font-black text-gray-200">₹${pack.price.toLocaleString('en-IN')}${pack.suffix || ''}</span>;
+container.appendChild(item);
+});
+}
+function verifyUsername() {
+const user = document.getElementById('username').value.trim();
+const confirmUser = document.getElementById('confirm-username').value.trim();
+const errorDiv = document.getElementById('username-error');
+if (!user || user !== confirmUser) {
+errorDiv.classList.remove('hidden');
+return;
+}
+errorDiv.classList.add('hidden');
+activeUsername = user;
+document.getElementById('display-user').innerText = @${user};
+document.getElementById('step-username').classList.add('hidden');
+document.getElementById('step-packages').classList.remove('hidden');
+document.getElementById('sticky-action-bar').classList.add('hidden');
+}
+function toggleSection(type) {
+const tabRobux = document.getElementById('tab-robux');
+const tabPlus = document.getElementById('tab-plus');
+const secRobux = document.getElementById('section-robux');
+const secPlus = document.getElementById('section-plus');
+if (type === 'robux') {
+tabRobux.className = "py-2.5 text-center text-sm font-bold rounded-lg bg-cyan-500 text-black transition-all";
+tabPlus.className = "py-2.5 text-center text-sm font-bold rounded-lg text-gray-400 hover:text-white transition-all";
+secRobux.classList.remove('hidden');
+secPlus.classList.add('hidden');
+} else {
+tabPlus.className = "py-2.5 text-center text-sm font-bold rounded-lg bg-purple-500 text-white transition-all";
+tabRobux.className = "py-2.5 text-center text-sm font-bold rounded-lg text-gray-400 hover:text-white transition-all";
+secPlus.classList.remove('hidden');
+secRobux.classList.add('hidden');
+}
+}
+function selectPackElement(pack, element) {
+document.querySelectorAll('#section-robux > div, #section-plus > div').forEach(el => {
+el.classList.remove('border-cyan-400', 'border-purple-400', 'bg-purple-950/20', 'bg-cyan-950/20');
+el.querySelector('.inner-dot').classList.add('hidden');
+});
+const isPlus = pack.id.startsWith('p');
+element.classList.add(isPlus ? 'border-purple-400' : 'border-cyan-400');
+element.classList.add(isPlus ? 'bg-purple-950/20' : 'bg-cyan-950/20');
+element.querySelector('.inner-dot').classList.remove('hidden');
+selectedProduct = pack;
+const checkoutBtn = document.getElementById('checkout-btn');
+checkoutBtn.disabled = false;
+checkoutBtn.className = "w-full neon-btn text-white font-bold py-3.5 px-6 rounded-xl uppercase tracking-wider text-sm cursor-pointer transition-all";
+}
+function goToPayment() {
+if (!selectedProduct) return;
+document.getElementById('summary-pack').innerText = selectedProduct.amount;
+document.getElementById('summary-price').innerText = ₹${selectedProduct.price.toLocaleString('en-IN')}${selectedProduct.suffix || ''};
+const encodedQRData = encodeURIComponent(upi://pay?pa=${YOUR_UPI_ID}&pn=RobuxStore&am=${selectedProduct.price}&cu=INR&tn=Order_For_${activeUsername});
+document.querySelector('#step-payment img').src = https://qrserver.com{encodedQRData};
+document.getElementById('step-packages').classList.add('hidden');
+document.getElementById('step-payment').classList.remove('hidden');
+}
+function backToPackages() {
+document.getElementById('step-payment').classList.add('hidden');
+document.getElementById('step-packages').classList.remove('hidden');
+}
+function copyUPI() {
+const upiInput = document.getElementById('upi-id');
+upiInput.select();
+upiInput.setSelectionRange(0, 99999);
+navigator.clipboard.writeText(upiInput.value);
+const toast = document.getElementById('copy-toast');
+toast.classList.remove('hidden');
+setTimeout(() => toast.classList.add('hidden'), 2500);
+}
+function submitPayment() {
+const utr = document.getElementById('utr-input').value.trim();
+if (utr.length < 6) {
+alert('⚠️ Please enter a valid Transaction UTR reference code.');
+return;
+}
+alert(🎉 Verification request submitted!\nUsername: ${activeUsername}\nPackage: ${selectedProduct.amount}\nUTR ID: ${utr}\n\nYour deployment will auto-process shortly.);
+}
+function focusStore() {
+document.querySelector('main').scrollIntoView({ behavior: 'smooth' });
+}
+
+
+
+---
+
+<FollowUp>
+अब आपको बस अपने गिटहब में पहले से बनी फ़ाइलों को डिलीट करके सिर्फ इस एक **`index.html`** को अपलोड कर देना है। क्या आप इस सिंगल कोड को अपलोड करके **Vercel पर लाइव करने के लिए तैयार हैं**?
+</FollowUp>
+
+
